@@ -8,7 +8,7 @@ NeutralTraits = ["Kindness", "Loyalty", "Greed", "Honor", "Knitter", "Grace", "G
 badTraits = ["Blindness I", "Slowness I", "Cursed I", "Brittle I", "Dullness I", "Deafness I", "Heavy Bleeding"]
 SuperBadTraits = ["Blindness II", "Slowness II", "Cursed II", "Dullness II", "Deafness II", "Hemorrhage"]
 allTraits = ["Speed II","Strength II", "Skill II", "Power II", "Sneak II", "Intelligence II", "Speed I","Strength I", "Skill I", "Power I", "Sneak I", "Intelligence I", "Sharp sight", "Kindness", "Loyalty", "Greed", "Honor", "Knitter", "Grace", "Generosity", "Blindness I", "Slowness I", "Cursed I", "Brittle I", "Dullness I", "Deafness I", "Heavy Bleeding", "Blindness II", "Slowness II", "Cursed II", "Dullness II", "Deafness II", "Hemorrhage"]
-BotNames = ["Eeeethan", "Luker", "Snoopers", "AAsush", "JaIden", "shooodow"]
+BotNames = ["Eeeethan", "Luker", "Snoopers", "AAsush", "JaIden", "shooodow", "Jaaaaker", "Péncîl", "Stévœ", "M00Ly", "Tedder", "IDK"]
 
 
 def trait_chooser(traitNum):
@@ -52,12 +52,22 @@ def battle():
         return 0
     
 Wins = 0
+rerolls = 3
 while 1:
-    print("Your traits:", playerTraits, "\n your total trait value: ", playerTraitValue,"\n\n")
+    print("\n\n-----------------------------------------------------")
+    print("Your traits:", playerTraits, "\n your total trait value: ", playerTraitValue,"\nWins: ", Wins)
+    print("Amount of rerolls: ",rerolls)
+    print("You can reroll your traits(reroll)")
+    print("If you have 1 trait or less you must reroll")
     startGame = input("Do you want to start the game(to win you must win 4 battles), (y/n): ")
-    if startGame.lower() in 'yes' and Wins < 5:
+    print("\n\n-----------------------------------------------------")
+    
+    if startGame.lower() in 'yes' and Wins < 4 and len(playerTraits) > 1:
+
+        nameofbot = random.choice(BotNames)
         print(f"Name: {name}\nAge: {age}\nTraits: {playerTraits}\nPoints: {playerTraitValue},\n\n\nVS")
-        print(f"\n\n\nBotName: {random.choice(BotNames)}\nBotAge: {random.randint(1,110)}\nTraits: {botTraits}\nPoints: {botTraitValue}")
+        print(f"\n\n\nBotName: {nameofbot}\nBotAge: {random.randint(1,110)}\nTraits: {botTraits}\nPoints: {botTraitValue}")
+        BotNames.remove(nameofbot) #stop duplicate bots from spawning
 
         battleResult = battle()
 
@@ -72,18 +82,29 @@ while 1:
             
 
         playerTraitValue = traitValueFinder(playerTraits)
-        botTraits = trait_chooser
+        botTraits = trait_chooser(5)
+        botTraitValue = traitValueFinder(botTraits)
         print("\n\n-----------------------------------------------------")
-        print("If you lost you can reroll your traits(reroll) :")
-        if len(playerTraits) < 2:
+        
+        if len(playerTraits) < 2 and rerolls == 0:
             print("you lost")
             break
-    elif startGame.lower() in 'reroll':
+    elif startGame.lower() in 'reroll' and rerolls > 0:
         playerTraits = trait_chooser(5)
         playerTraitValue = traitValueFinder(playerTraits)
+        rerolls-=1
     else:
+        if startGame.lower() in 'reroll':
+            print("Out of rerolls")
+            continue
+        elif startGame.lower() in 'yes' and len(playerTraits) == 0:
+            break
+        elif startGame.lower() in 'yes' and len(playerTraits) == 1:
+            continue
         break
 
     
-    
-print("\n\nfinished the game")
+if Wins == 4:
+    print("You beat the game!")
+else:    
+    print("\n\nfinished the game")
