@@ -58,7 +58,7 @@ while 1:
     print("Your traits:", playerTraits, "\n your total trait value: ", playerTraitValue,"\nWins: ", Wins)
     print("Amount of rerolls: ",rerolls)
     print("You can reroll your traits(reroll)")
-    print("If you have 1 trait or less you must reroll")
+    print("\nIf you have 1 trait or less you must reroll\n")
     startGame = input("Do you want to start the game(to win you must win 4 battles), (y/n): ")
     print("\n\n-----------------------------------------------------")
     
@@ -107,4 +107,4 @@ while 1:
 if Wins == 4:
     print("You beat the game!")
 else:    
-    print("\n\nfinished the game")
+    print("finished the game")
