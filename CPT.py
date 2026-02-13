@@ -43,30 +43,47 @@ botTraitValue = traitValueFinder(botTraits)
 def battle():
     
     if playerTraitValue > botTraitValue:
-        return "you won, no traits will be destroyed"
+        return 1
     elif playerTraitValue < botTraitValue:
         playerTraits.remove(random.choice(playerTraits))
         playerTraits.remove(random.choice(playerTraits))
-        return "You lost, 2 traits have been taken"
+        return -1
     else:
-        return "tie, no traits removed"
+        return 0
     
-
+Wins = 0
 while 1:
-    startGame = input("Do you want to start the game(to win you must win three battles), (y/n): ")
-    if startGame.lower() in 'yes':
+    print("Your traits:", playerTraits, "\n your total trait value: ", playerTraitValue,"\n\n")
+    startGame = input("Do you want to start the game(to win you must win 4 battles), (y/n): ")
+    if startGame.lower() in 'yes' and Wins < 5:
         print(f"Name: {name}\nAge: {age}\nTraits: {playerTraits}\nPoints: {playerTraitValue},\n\n\nVS")
         print(f"\n\n\nBotName: {random.choice(BotNames)}\nBotAge: {random.randint(1,110)}\nTraits: {botTraits}\nPoints: {botTraitValue}")
-        print(battle())
-        print("-----------------------------------------------------")
+
+        battleResult = battle()
+
+        if battleResult == 1:
+            Wins+=1
+            print("you won, no traits will be destroyed")
+        elif battleResult == -1:
+            print("You lost, 2 traits have been taken")
+        else:
+            print("tie, no traits removed")
+        
+            
+
+        playerTraitValue = traitValueFinder(playerTraits)
+        botTraits = trait_chooser
+        print("\n\n-----------------------------------------------------")
         print("If you lost you can reroll your traits(reroll) :")
         if len(playerTraits) < 2:
             print("you lost")
             break
     elif startGame.lower() in 'reroll':
-        
+        playerTraits = trait_chooser(5)
+        playerTraitValue = traitValueFinder(playerTraits)
     else:
-        break    
+        break
+
     
     
 print("\n\nfinished the game")
